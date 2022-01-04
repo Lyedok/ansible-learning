@@ -1,0 +1,16 @@
+---
+# tasks file for package_update
+
+- name: Check connection
+  ping:
+
+- name: Check linux family
+  debug: var=ansible_os_family
+
+- name: Yum update (RedHat, CentOS)
+  yum: update_cache=yes name=* state=latest
+  when: ansible_os_family == "RedHat"
+
+- name: Apt update (Debian, Ubuntu)
+  apt: update_cache=yes upgrade=yes
+  when: ansible_os_family == "Debian"

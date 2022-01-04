@@ -1,0 +1,8 @@
+---
+
+- name: Package update
+  hosts: all
+  become: yes
+
+  roles:
+          - package_update
