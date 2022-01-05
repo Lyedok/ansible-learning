@@ -1,2 +1,4 @@
 ---
 # handlers file for package_update
+- name: Reboot machine
+  reboot:

@@ -7,10 +7,28 @@
 - name: Check linux family
   debug: var=ansible_os_family
 
-- name: Yum update (RedHat, CentOS)
-  yum: update_cache=yes name=* state=latest
+- block: #Yum (RedHat, CentOS)
+  - name: Yum update
+    yum: update_cache=yes name=* state=latest 
+    register: yum_output
+    notify: Reboot machine
+  
+  - name: Print yum output
+    debug: 
+            var: yum_output.msg
+  
   when: ansible_os_family == "RedHat"
 
-- name: Apt update (Debian, Ubuntu)
-  apt: update_cache=yes upgrade=yes
+- block: #Apt (Debian, Ubuntu)
+  - name: Apt update
+    apt: update_cache=yes upgrade=yes
+    register: apt_output
+    notify: Reboot machine
+  
+  - name: Print apt output
+    debug:
+            var: apt_output.stdout_lines
+  
   when: ansible_os_family == "Debian"
+
+
